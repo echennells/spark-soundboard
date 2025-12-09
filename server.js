@@ -40,29 +40,27 @@ async function initializeWallet() {
   }
 }
 
-// Start monitoring for payments
+// Monitor for payments
 async function monitorPayments() {
   if (!sparkWallet) return;
 
   try {
-    // Check for recent transfers
     const transfersResponse = await sparkWallet.getTransfers(10, 0);
     const transfers = transfersResponse?.transfers || [];
 
-    // Mark any pending payments as paid if we see a completed transfer
+    // Check each pending payment to see if it's been paid
     for (const [paymentId, payment] of pendingPayments.entries()) {
       if (payment.paid) continue;
 
-      // Check if this payment hash appears in recent transfers with TRANSFER_COMPLETED status
-      const matchingTransfer = transfers.find(t =>
+      // Find matching completed transfer
+      const paidTransfer = transfers.find(t =>
         t.userRequest?.invoice?.paymentHash === payment.paymentHash &&
         t.userRequest?.status === 'TRANSFER_COMPLETED'
       );
 
-      if (matchingTransfer) {
+      if (paidTransfer) {
         payment.paid = true;
-        console.log(`✅ Payment received for ${SOUNDS.find(s => s.id === payment.soundId)?.name}`);
-        console.log(`   Amount: ${matchingTransfer.totalValue} sats`);
+        console.log(`✅ Payment received: ${SOUNDS.find(s => s.id === payment.soundId)?.name}`);
       }
     }
   } catch (error) {
@@ -70,7 +68,6 @@ async function monitorPayments() {
   }
 }
 
-// Poll for payments every 3 seconds
 setInterval(monitorPayments, 3000);
 
 initializeWallet();
