@@ -12,24 +12,22 @@ let sparkWallet = null;
 
 async function initializeWallet() {
   try {
-    const { wallet, mnemonic } = await SparkWallet.initialize({
+    if (!process.env.SPARK_MNEMONIC) {
+      console.error('❌ SPARK_MNEMONIC not found in .env file');
+      process.exit(1);
+    }
+
+    const { wallet } = await SparkWallet.initialize({
       mnemonicOrSeed: process.env.SPARK_MNEMONIC,
       options: {
-        network: process.env.SPARK_NETWORK || "FLASHNET", // Use FLASHNET for testnet, MAINNET for production
+        network: process.env.SPARK_NETWORK || "MAINNET",
       },
     });
 
     sparkWallet = wallet;
 
-    if (!process.env.SPARK_MNEMONIC) {
-      console.log('\n⚠️  IMPORTANT: Save this mnemonic to your .env file as SPARK_MNEMONIC:');
-      console.log(mnemonic);
-      console.log('');
-    }
-
     console.log('✅ Spark wallet initialized');
 
-    // Get wallet info
     const balance = await sparkWallet.getBalance();
     console.log('💰 Wallet balance:', balance.confirmedSats, 'sats');
 
