@@ -1,0 +1,15 @@
+# Environment variables
+.env
+
+# Dependencies
+node_modules/
+
+# Temporary files
+temp-spark-repo/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
