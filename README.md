@@ -11,6 +11,42 @@ A Lightning-enabled soundboard that lets users pay 100 sats to play sounds using
 
 ## Setup
 
+### Option 1: Docker (Recommended)
+
+1. **Clone the repo:**
+```bash
+git clone https://github.com/echennells/spark-soundboard.git
+cd spark-soundboard
+```
+
+2. **Add sound files:**
+
+Place your MP3 sound files in `public/sounds/` directory:
+- `airhorn.mp3`
+- `drumroll.mp3`
+- `tada.mp3`
+- `crickets.mp3`
+
+You can find free sound effects at [freesound.org](https://freesound.org/), [mixkit.co](https://mixkit.co/free-sound-effects/), or [zapsplat.com](https://www.zapsplat.com/).
+
+3. **Create `.env` file:**
+```bash
+SPARK_MNEMONIC=your twelve word mnemonic phrase here
+SPARK_NETWORK=FLASHNET
+```
+
+4. **Build and run with Docker:**
+```bash
+docker build -t spark-soundboard .
+docker run -p 3000:3000 --env-file .env spark-soundboard
+```
+
+5. **Open the soundboard:**
+
+Navigate to `http://localhost:3000` in your browser.
+
+### Option 2: Local Development
+
 1. **Install dependencies:**
 ```bash
 npm install
