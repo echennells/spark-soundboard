@@ -9,9 +9,56 @@ A Lightning-enabled soundboard that lets users pay 100 sats to play sounds using
 - Built with Spark L2 for instant, low-fee Bitcoin payments
 - Self-custodial wallet integration
 
-## Setup
+## Quick Start
 
-### Option 1: Docker (Recommended)
+The easiest way to get started:
+
+```bash
+git clone https://github.com/echennells/spark-soundboard.git
+cd spark-soundboard
+npm install
+npm start
+```
+
+Then open http://localhost:3000 in your browser. Sound files are included!
+
+On first run, save the generated mnemonic to your `.env` file as `SPARK_MNEMONIC`.
+
+## Setup Options
+
+### Option 1: NPM (Simplest)
+
+1. **Clone and install:**
+```bash
+git clone https://github.com/echennells/spark-soundboard.git
+cd spark-soundboard
+npm install
+```
+
+2. **Create `.env` file:**
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and add your Spark wallet mnemonic:
+```bash
+SPARK_MNEMONIC=your twelve word mnemonic phrase here
+SPARK_NETWORK=FLASHNET
+```
+
+If you don't have a mnemonic, just run `npm start` and one will be generated for you on first run.
+
+3. **Start the server:**
+```bash
+npm start
+```
+
+4. **Open the soundboard:**
+Navigate to `http://localhost:3000` in your browser.
+
+**Note:** Sound files are already included in the repo (airhorn, drumroll, tada, crickets). You can replace them in `public/sounds/` if desired.
+
+### Option 2: Docker
 
 1. **Clone the repo:**
 ```bash
@@ -19,69 +66,29 @@ git clone https://github.com/echennells/spark-soundboard.git
 cd spark-soundboard
 ```
 
-2. **Add sound files:**
-
-Place your MP3 sound files in `public/sounds/` directory:
-- `airhorn.mp3`
-- `drumroll.mp3`
-- `tada.mp3`
-- `crickets.mp3`
-
-You can find free sound effects at [freesound.org](https://freesound.org/), [mixkit.co](https://mixkit.co/free-sound-effects/), or [zapsplat.com](https://www.zapsplat.com/).
-
-3. **Create `.env` file:**
+2. **Create `.env` file:**
 ```bash
 SPARK_MNEMONIC=your twelve word mnemonic phrase here
 SPARK_NETWORK=FLASHNET
 ```
 
-4. **Build and run with Docker:**
+3. **Build and run with Docker:**
 ```bash
 docker build -t spark-soundboard .
-docker run -p 3000:3000 --env-file .env spark-soundboard
+docker run -p 3000:3000 --env-file .env -e PORT=3000 spark-soundboard
 ```
 
-5. **Open the soundboard:**
+**Note:** The `-e PORT=3000` is required to override any PORT setting in your `.env` file.
 
+4. **Open the soundboard:**
 Navigate to `http://localhost:3000` in your browser.
 
-### Option 2: Local Development
+### Funding Your Wallet
 
-1. **Install dependencies:**
-```bash
-npm install
-```
-
-2. **Configure environment:**
-```bash
-cp .env.example .env
-```
-
-3. **Run the server:**
-```bash
-npm start
-```
-
-On first run, the server will generate a new Spark wallet and display the mnemonic phrase. **Save this mnemonic to your `.env` file** as `SPARK_MNEMONIC`.
-
-4. **Fund your wallet:**
-
-The server will display your Spark address on startup. You can fund it by:
+The server will display your Spark address on startup. Fund it by:
 - Sending Bitcoin on-chain to your deposit address
 - Receiving a Spark transfer from another Spark wallet
 - Using a testnet faucet (for FLASHNET testnet)
-
-5. **Add sound files:**
-
-Place your MP3 sound files in `public/sounds/` directory:
-- `airhorn.mp3`
-- `drumroll.mp3`
-- `tada.mp3`
-- `crickets.mp3`
-
-6. **Open the soundboard:**
-
-Navigate to `http://localhost:3000` in your browser.
 
 ## How It Works
 
